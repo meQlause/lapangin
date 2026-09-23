@@ -133,7 +133,7 @@ error/404 skeletons)        │                              │
 - [x] `sport=Semua` is rejected with `400 E-VALIDATION`; the FE client removes the param instead, so a real UI never sends the literal ([`./BE/features/courts.md`](./BE/features/courts.md) §1 notes)
 - [x] Every server-owned key rejected by `.strict()` on the query schema — a query with `?taxPercent=0` returns `400 E-VALIDATION` with a details row for the extra key
 - [x] FE `CourtsScreen` renders every acceptance criterion in [`./FE/features/courts.md`](./FE/features/courts.md) §7.1–§7.4 against the real backend; `tests/e2e/courts.spec.ts` passes
-- [ ] `axe-core/playwright` reports **zero** violations on `filled`, `loading`, `empty`, `error` (NFR-011)
+- [x] `axe-core/playwright` reports **zero** violations on `filled`, `loading`, `empty`, `error` (NFR-011)
 - [ ] The four `screenshots/courts-*.png` states are all reachable from the running app
 - [ ] FE payload budget check — `pnpm size` under 180 KB gzipped (NFR-010)
 
