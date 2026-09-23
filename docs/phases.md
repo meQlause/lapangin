@@ -72,7 +72,7 @@ error/404 skeletons)        │                              │
 - [x] The FE renders `<LoadingState/>` and `<ErrorState requestId="req_01JTEST"/>` from Storybook-less fixture props with axe-core reporting zero violations (NFR-011, FR-015, FR-017)
 - [x] `/` and unknown routes render `<NotFound/>`; `/v/:slug` mounts `<Layout/>` with the header and footer from the mockup — no data yet
 - [x] `tests/unit/api/money.test.ts` passes `formatIDR("180000.00") === "Rp 180.000"` (FR-032) — the one function that survives from `mockup/data.js`
-- [ ] `docs/error-handling.md` is committed unchanged in both repos; no code refers to a code not in §3
+- [x] `docs/error-handling.md` is committed unchanged in both repos; no code refers to a code not in §3
 
 > The trap this phase closes is retrofitting the envelope. Every later phase throws domain errors and expects the envelope to serialise them; if we ship a feature first and the envelope second, every controller written up to that point has an inline `res.status(...)` that will not survive review. Cheap here — one middleware and one integration test — vs. touching every service later.
 
