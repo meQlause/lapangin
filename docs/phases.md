@@ -70,7 +70,7 @@ error/404 skeletons)        │                              │
 - [x] Any unhandled thrown `Error` inside a controller becomes `500 E-INTERNAL` with the envelope, no stack trace in the body — asserted by `tests/unit/http/error.test.ts` (NFR-006)
 - [x] Every response carries a `requestId` — asserted by REG-006 setup (`correlationIdMiddleware` mounted before `express.json()`; see [`./BE/be-architecture.md`](./BE/be-architecture.md) §6)
 - [x] The FE renders `<LoadingState/>` and `<ErrorState requestId="req_01JTEST"/>` from Storybook-less fixture props with axe-core reporting zero violations (NFR-011, FR-015, FR-017)
-- [ ] `/` and unknown routes render `<NotFound/>`; `/v/:slug` mounts `<Layout/>` with the header and footer from the mockup — no data yet
+- [x] `/` and unknown routes render `<NotFound/>`; `/v/:slug` mounts `<Layout/>` with the header and footer from the mockup — no data yet
 - [ ] `tests/unit/api/money.test.ts` passes `formatIDR("180000.00") === "Rp 180.000"` (FR-032) — the one function that survives from `mockup/data.js`
 - [ ] `docs/error-handling.md` is committed unchanged in both repos; no code refers to a code not in §3
 
