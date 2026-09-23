@@ -18,7 +18,7 @@ the engineering specification set comes out, one stage per commit.
 | S3 | strict rules, error registry, architecture, stack | ✓ |
 | S4 | endpoint contracts, testing strategy | ✓ |
 | S5 | design tokens, screen specs | ✓ |
-| S6 | `docs/phases.md` | · |
+| S6 | `docs/phases.md` | ✓ |
 | S7 | code and tests | · |
 
 ## The inputs
@@ -60,6 +60,42 @@ which registers plugins at startup and does have the skills.
 ## Build log
 
 Newest first. One entry per commit.
+
+### S6 — phased delivery plan
+
+```
+$ claude -p --permission-mode acceptEdits "/pspt:spec ... run S6 only, then stop."
+
+S6 complete.  docs/phases.md — 5 phases (P0..P4), 10 REG ids threaded,
+              D-5 identity release blocker recorded
+
+Read it and change anything you disagree with; the exit criteria drive /pspt:build from here.
+Next: /pspt:build  -> work the red/green/clean loop on P0's first exit criterion
+```
+
+Five phases, **53 checkbox exit criteria**, each naming a regression id, a test
+file, or an observable response — the format `/pspt:build` consumes one at a time.
+
+**It put the hardest guarantee in P1**, which is the ordering rule that matters
+most. REG-001 fires 20 parallel inserts for the same court and interval and
+asserts exactly one succeeds and the row count grows by one — proven against the
+migration, through the repository, before any HTTP endpoint exists. If the
+constraint misbehaves, that is a migration edit rather than a service rewrite.
+
+**It carried the S4 correction forward without being told to.** P3's trap note
+names the application-level pre-check between `SELECT` and `INSERT` as a race the
+constraint exists to close — the same defect corrected at the S3 checkpoint, now
+stated where someone is about to write the service.
+
+**It flagged its own uncertainty.** Risk R-1 says the Prisma error shape for an
+exclusion violation may not match what the translator expects, so REG-001 asserts
+the error surface at the HTTP boundary in both P1 and P3 rather than only at the
+driver. That is the right instinct: the exact driver code is the kind of detail a
+specification should not assert confidently without having run it.
+
+**D-5 ships red, deliberately.** The identity stub is recorded as a release
+blocker in the decisions table, not buried in a note — *"the one row on this page
+that ships red"* — with a boot-time refusal and a release-checklist row in P4.
 
 ### S5 — design tokens and screen specifications
 

@@ -5,7 +5,7 @@
     "s3": "2026-09-23",
     "s4": "2026-09-23",
     "s5": "2026-09-23",
-    "s6": null
+    "s6": "2026-09-23"
   },
   "stack": {
     "database": "PostgreSQL 16",
@@ -24,6 +24,10 @@
   },
   "notes": {
     "money": "exact decimal in storage, decimal string on the wire",
-    "paymentsScope": "out of scope this release; bookings.payment_status column reserved"
+    "paymentsScope": "out of scope this release; bookings.payment_status column reserved",
+    "currencyExponent": "IDR displayed as whole rupiah; NUMERIC(12,2) storage kept for tax intermediates",
+    "multiVenue": "schema-only this release; UI ships single venue (gor-kemang)",
+    "timezoneStorage": "IANA id on venues.timezone; snapshotted onto bookings.venue_timezone",
+    "identityBlocker": "X-User-Id stub header; must be replaced by a verified session before production (phases.md §0 D-5; P4 boot-refusal + release checklist)"
   }
 }
