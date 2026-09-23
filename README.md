@@ -15,7 +15,7 @@ the engineering specification set comes out, one stage per commit.
 | Inputs | `brd.md` `prd.md` `srs.md` `mockup/` | ✓ |
 | Gates | completeness · two-way consistency | ✓ |
 | S2 | `docs/data-spec.md` | ✓ |
-| S3 | strict rules, error registry, architecture, stack | · |
+| S3 | strict rules, error registry, architecture, stack | ✓ |
 | S4 | endpoint contracts, testing strategy | · |
 | S5 | design tokens, screen specs | · |
 | S6 | `docs/phases.md` | · |
@@ -60,6 +60,46 @@ which registers plugins at startup and does have the skills.
 ## Build log
 
 Newest first. One entry per commit.
+
+### S3 — shared decisions
+
+```
+$ claude -p --permission-mode acceptEdits "/pspt:spec ... run S3 only, then stop."
+
+S3 complete.  docs/{strict-rules,error-handling}.md · docs/BE/{be-architecture,be-stack,lint}.md
+              · docs/FE/{fe-architecture,fe-stack,lint}.md
+              — 10 error codes, middleware order pinned, `*.rules.ts` boundary anchored both sides.
+
+Read them and change anything you disagree with; every stage after this quotes them.
+Next: /pspt:spec  → S4, backend features + testing.md
+```
+
+Eight files, 1501 lines. It did not re-ask the stack — it read `docs/.pspt.json`,
+which S2 wrote, so resumption works as designed.
+
+**The lint rules came through byte-identical.** `diff` against the plugin's
+`references/lint/express.md` and `react.md` reports no difference at all. That is
+"select, never generate" working: one source, nothing paraphrased, nothing to
+drift.
+
+**The checkpoint caught a real defect**, which is the entire reason it exists.
+The generated registry listed the conflict code as raised by
+
+> the insert … **or a service-level pre-check** spots the same conflict
+
+That second clause is check-then-insert — precisely the race NFR-001 and BO-1
+exist to eliminate, and precisely what an exclusion constraint is for. A spec
+that permits it invites a service that queries first, passes its tests on a quiet
+machine, and double-books under load.
+
+Corrected in place: the code now has exactly one source, the constraint, with a
+note explaining why an application pre-check reopens the window the constraint
+was added to close.
+
+This is the checkpoint doing its job rather than a reason to distrust the tool.
+*"Read it and change anything you disagree with"* is the instruction the skill
+prints after every stage, and a generated document that is never read is worse
+than no document, because the next reader trusts it.
 
 ### S2 — data specification
 
