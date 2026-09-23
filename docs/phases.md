@@ -124,7 +124,7 @@ error/404 skeletons)        │                              │
 
 ### Exit criteria
 
-- [ ] `GET /api/v1/venues/gor-kemang` against the seed returns the exact body in [`./BE/features/venues.md`](./BE/features/venues.md) §1 — `taxPercent: "11.00"`, `cancellationWindowHours: 12`, `bookingHorizonDays: 30`, `minimumDurationMinutes: 60`, `openingTime: "06:00"`, `closingTime: "23:00"`
+- [x] `GET /api/v1/venues/gor-kemang` against the seed returns the exact body in [`./BE/features/venues.md`](./BE/features/venues.md) §1 — `taxPercent: "11.00"`, `cancellationWindowHours: 12`, `bookingHorizonDays: 30`, `minimumDurationMinutes: 60`, `openingTime: "06:00"`, `closingTime: "23:00"`
 - [ ] `GET /api/v1/venues/gor-kemang/courts?date=2026-09-27&startTime=10:00&duration=2` returns three items in `display_order`; Futsal A has eight slot chips with `08:00`, `09:00`, `19:00` taken and the rest free (matches `mockup/data.js`)
 - [ ] `GET /api/v1/venues/gor-kemang/courts?date=<today+31>` returns `400 E-OUTSIDE-HORIZON` with `details[].code = "beyond_horizon"`; `<today+30>` returns `200` — **REG-008-court-horizon-date**
 - [ ] `UPDATE venues SET cancellation_window_hours = 24` changes `data.cancellationWindowHours` on the next call to `24` — **REG-010-venue-settings-copy** (NFR-013)
