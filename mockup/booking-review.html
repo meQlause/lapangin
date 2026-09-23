@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lapangin · Review booking</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="courts.html">Lapang<span>in</span></a>
+    <nav class="nav">
+      <a href="courts.html">Cari lapangan</a>
+      <a href="#">Booking saya</a>
+      <div class="avatar" title="Azka Willian Muhammad">AW</div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="crumbs">
+    <a href="courts.html">GOR Kemang</a> · Review booking
+  </div>
+  <div class="page-head">
+    <h1>Review booking</h1>
+    <p>Periksa jadwal dan biayanya sebelum lanjut ke pembayaran.</p>
+  </div>
+
+  <div class="state-switch">
+    <span>Status layar:</span>
+    <a href="booking-review.html">Normal</a>
+    <a href="booking-review.html?state=taken">Slot diambil</a>
+    <a href="booking-review.html?state=invalid">Input salah</a>
+    <a href="booking-review.html?state=window">Lewat batas</a>
+  </div>
+
+  <div id="banner-slot"></div>
+
+  <div class="review">
+    <section>
+      <div class="card">
+        <h2>Jadwal</h2>
+        <dl class="kv">
+          <dt>Lapangan</dt>
+          <dd data-field="courts.name" id="court-name"></dd>
+          <dt>Lokasi</dt>
+          <dd id="venue"></dd>
+          <dt>Tanggal</dt>
+          <dd data-field="bookings.bookingDate" id="date"></dd>
+          <dt>Jam</dt>
+          <dd data-field="bookings.startTime,endTime" id="time"></dd>
+          <dt>Durasi</dt>
+          <dd data-field="bookings.durationHours" id="duration"></dd>
+          <dt>Zona waktu</dt>
+          <dd id="tz"></dd>
+        </dl>
+      </div>
+
+      <div class="card">
+        <h2>Data pemesan</h2>
+        <div class="form-row">
+          <label for="name">Nama</label>
+          <input id="name" type="text" value="Azka Willian Muhammad">
+        </div>
+        <div class="form-row" id="row-phone">
+          <label for="phone">Nomor WhatsApp</label>
+          <input id="phone" type="tel" value="0812-1122-3344">
+          <div class="hint">Dipakai untuk konfirmasi dan kode masuk lapangan.</div>
+        </div>
+        <div class="form-row">
+          <label for="note">Catatan untuk pengelola</label>
+          <textarea id="note" rows="3">Tim 10 orang, minta bola pinjam kalau ada.</textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Ketentuan pembatalan</h3>
+        <p class="note" id="policy"></p>
+      </div>
+    </section>
+
+    <aside class="summary">
+      <div class="card">
+        <h2>Rincian biaya</h2>
+        <div class="lines">
+          <div class="line">
+            <span class="label" id="line-unit"></span>
+            <span data-field="bookings.subtotalAmount" id="val-subtotal"></span>
+          </div>
+          <div class="line">
+            <span class="label">Pajak <span id="tax-pct"></span>%</span>
+            <span data-field="bookings.taxAmount" id="val-tax"></span>
+          </div>
+          <div class="line total">
+            <span>Total</span>
+            <span data-field="bookings.totalAmount" id="val-total"></span>
+          </div>
+        </div>
+        <p class="note">
+          Harga dikunci saat booking dibuat. Perubahan tarif lapangan setelah ini
+          tidak mengubah tagihanmu.
+        </p>
+        <button class="btn btn-primary btn-block submit" id="submit">
+          Lanjut ke pembayaran
+        </button>
+        <a class="btn btn-ghost btn-block" href="courts.html">Ganti jadwal</a>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    Lapangin · mockup stage 1 · tidak ada nominal yang dihitung di sisi klien
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const state = new URLSearchParams(location.search).get("state") || "normal";
+  const b = DRAFT_BOOKING;
+  const hours = b.durationHours.replace(".00", "");
+
+  document.querySelectorAll(".state-switch a").forEach((a) => {
+    const s = new URLSearchParams(a.search).get("state") || "normal";
+    if (s === state) a.classList.add("active");
+  });
+
+  // Every amount below arrives already computed. The client only formats.
+  const text = {
+    "court-name": b.courtName,
+    venue: `${b.venueName} · ${b.venueAddress}`,
+    date: b.bookingDateLabel,
+    time: `${b.startTime} sampai ${b.endTime}`,
+    duration: `${hours} jam`,
+    tz: `${SETTINGS.venueTimezone} (WIB)`,
+    "tax-pct": SETTINGS.taxPercent,
+    "line-unit": `${formatIDR(b.unitPrice)} × ${hours} jam`,
+    "val-subtotal": formatIDR(b.subtotalAmount),
+    "val-tax": formatIDR(b.taxAmount),
+    "val-total": formatIDR(b.totalAmount),
+    policy:
+      `Pembatalan gratis paling lambat ${SETTINGS.cancellationWindowHours} jam ` +
+      `sebelum jam main. Lewat dari itu, booking tidak bisa dibatalkan dan ` +
+      `dana tidak dikembalikan.`,
+  };
+
+  for (const [id, value] of Object.entries(text)) {
+    document.getElementById(id).textContent = value;
+  }
+
+  const banner = document.getElementById("banner-slot");
+  const submit = document.getElementById("submit");
+
+  const bannerHtml = (kind, title, body) => `
+    <div class="banner ${kind}" role="alert">
+      <div><strong>${title}</strong>${body}</div>
+    </div>`;
+
+  if (state === "taken") {
+    banner.innerHTML = bannerHtml(
+      "danger",
+      "Jadwal ini baru saja diambil orang lain",
+      `Sabtu, 27 September 2026 jam 10:00 sampai 12:00 sudah tidak tersedia di
+       ${b.courtName}. Data yang kamu isi tetap tersimpan, tinggal pilih jam lain.`
+    );
+    submit.disabled = true;
+    submit.textContent = "Pilih jam lain dulu";
+  }
+
+  if (state === "invalid") {
+    const row = document.getElementById("row-phone");
+    row.classList.add("invalid");
+    document.getElementById("phone").value = "0812";
+    row.insertAdjacentHTML(
+      "beforeend",
+      `<div class="field-error">
+         Nomor WhatsApp minimal 9 angka, tanpa spasi atau tanda hubung.
+       </div>`
+    );
+    banner.innerHTML = bannerHtml(
+      "danger",
+      "Ada isian yang perlu diperbaiki",
+      "Periksa kembali kolom yang ditandai merah."
+    );
+  }
+
+  if (state === "window") {
+    banner.innerHTML = bannerHtml(
+      "warn",
+      `Booking kurang dari ${SETTINGS.cancellationWindowHours} jam sebelum main`,
+      "Jadwal ini masih bisa dipesan, tetapi tidak bisa dibatalkan lagi setelah pembayaran."
+    );
+  }
+</script>
+</body>
+</html>

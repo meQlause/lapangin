@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lapangin · Cari lapangan</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="courts.html">Lapang<span>in</span></a>
+    <nav class="nav">
+      <a href="courts.html">Cari lapangan</a>
+      <a href="#">Booking saya</a>
+      <div class="avatar" title="Azka Willian Muhammad">AW</div>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>GOR Kemang</h1>
+    <p id="venue-meta"></p>
+  </div>
+
+  <div class="state-switch">
+    <span>Status layar:</span>
+    <a href="courts.html">Terisi</a>
+    <a href="courts.html?state=loading">Memuat</a>
+    <a href="courts.html?state=empty">Kosong</a>
+    <a href="courts.html?state=error">Gagal</a>
+  </div>
+
+  <form class="filters" onsubmit="return false;">
+    <div class="field">
+      <label for="date">Tanggal main</label>
+      <input id="date" type="date" value="2026-09-27">
+    </div>
+    <div class="field">
+      <label for="start">Mulai jam</label>
+      <input id="start" type="time" value="10:00" step="1800">
+    </div>
+    <div class="field">
+      <label for="duration">Durasi</label>
+      <select id="duration">
+        <option value="1">1 jam</option>
+        <option value="2" selected>2 jam</option>
+        <option value="3">3 jam</option>
+      </select>
+    </div>
+    <div class="chips">
+      <button type="button" class="chip" aria-pressed="true">Semua</button>
+      <button type="button" class="chip" aria-pressed="false">Futsal</button>
+      <button type="button" class="chip" aria-pressed="false">Badminton</button>
+      <button type="button" class="chip" aria-pressed="false">Basket</button>
+    </div>
+  </form>
+
+  <div id="list" class="court-list"></div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    Lapangin · mockup stage 1 · data dummy, tidak memanggil backend apa pun
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  // Which state to render. The mockup ships every state a screen can be in,
+  // so review covers them before any of them is implemented.
+  const state = new URLSearchParams(location.search).get("state") || "filled";
+  const list = document.getElementById("list");
+
+  document.getElementById("venue-meta").textContent =
+    `${VENUE.address} · ${VENUE.openingHours} · WIB`;
+
+  document.querySelectorAll(".state-switch a").forEach((a) => {
+    const s = new URLSearchParams(a.search).get("state") || "filled";
+    if (s === state) a.classList.add("active");
+  });
+
+  document.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".chip").forEach((c) =>
+        c.setAttribute("aria-pressed", "false")
+      );
+      chip.setAttribute("aria-pressed", "true");
+    });
+  });
+
+  const SLOT_TITLE = {
+    free: "Tersedia",
+    taken: "Sudah dibooking",
+    closed: "Di luar jam operasional",
+  };
+
+  function slotHtml(slot) {
+    const cls = slot.state === "free" ? "slot" : `slot ${slot.state}`;
+    return `<span class="${cls}" title="${SLOT_TITLE[slot.state]}">${slot.start}</span>`;
+  }
+
+  function courtHtml(court) {
+    const bookable = court.status === "available";
+    const tags = court.amenities
+      .map((a) => `<span class="tag">${a}</span>`)
+      .join("");
+    const body = bookable
+      ? `<div class="slots" data-field="availability.freeIntervals">
+           ${court.slots.map(slotHtml).join("")}
+         </div>`
+      : `<div class="meta">Jadwal ditutup sementara karena perawatan lapangan.</div>`;
+    const action = bookable
+      ? `<a class="btn btn-primary btn-block" href="booking-review.html">Pilih jadwal</a>`
+      : `<button class="btn btn-primary btn-block" disabled>Tidak tersedia</button>`;
+
+    return `
+      <article class="court" data-court-id="${court.id}">
+        <div class="court-photo">${court.photoLabel}</div>
+        <div class="court-body">
+          <h2 data-field="courts.name">${court.name}</h2>
+          <div class="meta">${court.surface} · ${court.floor}</div>
+          <div class="tags">${tags}</div>
+          ${body}
+        </div>
+        <div class="court-side">
+          <div>
+            <div class="price" data-field="courts.pricePerHour">
+              ${formatIDR(court.pricePerHour)}
+              <small>per jam, belum termasuk pajak ${SETTINGS.taxPercent}%</small>
+            </div>
+            <div class="status ${bookable ? "open" : "maintenance"}">
+              ${bookable ? "Bisa dibooking hari ini" : "Perawatan sampai 30 September"}
+            </div>
+          </div>
+          ${action}
+        </div>
+      </article>`;
+  }
+
+  const skeletonHtml = () => `
+    <div class="skeleton">
+      <div class="bone photo"></div>
+      <div>
+        <div class="bone line w60"></div>
+        <div class="bone line w40"></div>
+        <div class="bone line w80"></div>
+        <div class="bone line w60"></div>
+      </div>
+      <div>
+        <div class="bone line w80"></div>
+        <div class="bone line w40"></div>
+      </div>
+    </div>`;
+
+  const emptyHtml = () => `
+    <div class="empty">
+      <h3>Tidak ada lapangan yang cocok</h3>
+      <p>
+        Tidak ada lapangan kosong pada Sabtu, 27 September 2026 jam 10:00 selama 2 jam.
+        <br>Coba geser jam mulai atau pilih tanggal lain.
+      </p>
+      <a class="btn btn-ghost" href="courts.html">Atur ulang filter</a>
+    </div>`;
+
+  const errorHtml = () => `
+    <div class="error-page">
+      <h3>Jadwal gagal dimuat</h3>
+      <p>
+        Kami tidak bisa mengambil jadwal lapangan saat ini. Coba lagi sebentar lagi.
+        <br><span class="tag">Kode permintaan: req_01J9Z4K2M7Q</span>
+      </p>
+      <a class="btn btn-primary" href="courts.html">Muat ulang</a>
+    </div>`;
+
+  if (state === "loading") {
+    list.innerHTML = skeletonHtml().repeat(3);
+  } else if (state === "empty") {
+    list.innerHTML = emptyHtml();
+  } else if (state === "error") {
+    list.innerHTML = errorHtml();
+  } else {
+    list.innerHTML = COURTS.map(courtHtml).join("");
+  }
+</script>
+</body>
+</html>
