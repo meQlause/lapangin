@@ -189,7 +189,7 @@ error/404 skeletons)        │                              │
 - [x] Setting `NODE_ENV=production` with `AUTH_STUB_ENABLED=true` (or unset session config) fails at **boot** with a message naming `X-User-Id`, not on first request — `tests/unit/config/env.test.ts` asserts this
 - [x] The release checklist has one row: **"D-5 resolved: `X-User-Id` header replaced by a verified session; NFR-005 asserted end-to-end against a real session cookie."** Unchecked, release is refused
 - [x] Every state in `screenshots/` (7 files: `courts-empty`, `courts-error`, `courts-filled`, `courts-loading`, `review-invalid`, `review-normal`, `review-slot-taken`) is reachable from the running app and hit by an E2E
-- [ ] `axe-core/playwright` reports **zero** violations across all E2E specs (NFR-011)
+- [x] `axe-core/playwright` reports **zero** violations across all E2E specs (NFR-011)
 - [ ] `pnpm size` fails the CI job over 180 KB gzipped (NFR-010)
 - [ ] `scripts/check-test-mirror.mjs` reports no missing test file — `tests/` mirrors `src/` exactly (SR-2)
 - [ ] Every regression file `REG-001`..`REG-010` has run green in the last 24 hours ([`./BE/testing.md`](./BE/testing.md) §4)
