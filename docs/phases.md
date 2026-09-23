@@ -130,7 +130,7 @@ error/404 skeletons)        │                              │
 - [x] `UPDATE venues SET cancellation_window_hours = 24` changes `data.cancellationWindowHours` on the next call to `24` — **REG-010-venue-settings-copy** (NFR-013)
 - [x] `GET /api/v1/venues/does-not-exist` returns `404 E-VENUE-NOT-FOUND`
 - [x] A court with `status = 'maintenance'` returns an **empty** `slots[]` array and a non-null `maintenanceReason`, `maintenanceUntil` (FR-006) — asserted by `tests/integration/features/courts/courts.routes.test.ts` "a maintenance court has empty slots[]…"
-- [ ] `sport=Semua` is rejected with `400 E-VALIDATION`; the FE client removes the param instead, so a real UI never sends the literal ([`./BE/features/courts.md`](./BE/features/courts.md) §1 notes)
+- [x] `sport=Semua` is rejected with `400 E-VALIDATION`; the FE client removes the param instead, so a real UI never sends the literal ([`./BE/features/courts.md`](./BE/features/courts.md) §1 notes)
 - [ ] Every server-owned key rejected by `.strict()` on the query schema — a query with `?taxPercent=0` returns `400 E-VALIDATION` with a details row for the extra key
 - [ ] FE `CourtsScreen` renders every acceptance criterion in [`./FE/features/courts.md`](./FE/features/courts.md) §7.1–§7.4 against the real backend; `tests/e2e/courts.spec.ts` passes
 - [ ] `axe-core/playwright` reports **zero** violations on `filled`, `loading`, `empty`, `error` (NFR-011)
