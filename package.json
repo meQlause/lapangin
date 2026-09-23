@@ -7,7 +7,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "check": "pnpm -r run check"
+    "check": "pnpm -r run check",
+    "size": "pnpm --dir frontend run size"
   },
   "devDependencies": {
     "prettier": "^3.3.3"

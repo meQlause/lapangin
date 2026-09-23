@@ -135,7 +135,7 @@ error/404 skeletons)        │                              │
 - [x] FE `CourtsScreen` renders every acceptance criterion in [`./FE/features/courts.md`](./FE/features/courts.md) §7.1–§7.4 against the real backend; `tests/e2e/courts.spec.ts` passes
 - [x] `axe-core/playwright` reports **zero** violations on `filled`, `loading`, `empty`, `error` (NFR-011)
 - [x] The four `screenshots/courts-*.png` states are all reachable from the running app
-- [ ] FE payload budget check — `pnpm size` under 180 KB gzipped (NFR-010)
+- [x] FE payload budget check — `pnpm size` under 180 KB gzipped (NFR-010)
 
 > The trap here is drift between the response body and the mockup. The seed is fixed in [`./data-spec.md`](./data-spec.md) §10 for exactly this reason: a reviewer holds `mockup/courts.html?state=filled` next to the running app and sees the same seventeen chips in the same order, or one of them is wrong.
 
