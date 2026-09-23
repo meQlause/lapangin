@@ -191,7 +191,7 @@ error/404 skeletons)        │                              │
 - [x] Every state in `screenshots/` (7 files: `courts-empty`, `courts-error`, `courts-filled`, `courts-loading`, `review-invalid`, `review-normal`, `review-slot-taken`) is reachable from the running app and hit by an E2E
 - [x] `axe-core/playwright` reports **zero** violations across all E2E specs (NFR-011)
 - [x] `pnpm size` fails the CI job over 180 KB gzipped (NFR-010)
-- [ ] `scripts/check-test-mirror.mjs` reports no missing test file — `tests/` mirrors `src/` exactly (SR-2)
+- [x] `scripts/check-test-mirror.mjs` reports no missing test file — `tests/` mirrors `src/` exactly (SR-2)
 - [ ] Every regression file `REG-001`..`REG-010` has run green in the last 24 hours ([`./BE/testing.md`](./BE/testing.md) §4)
 - [ ] Availability latency measured under seeded production-scale data: `GET /venues/gor-kemang/courts?date=…` returns within **300 ms** server time at p95 (NFR-008)
 - [ ] Perceived responsiveness: `<LoadingState/>` paints within **100 ms** of a pending request (NFR-009)

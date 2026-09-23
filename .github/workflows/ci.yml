@@ -18,4 +18,5 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir backend test:mirror
       - run: pnpm size
