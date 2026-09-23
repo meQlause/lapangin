@@ -64,9 +64,9 @@ error/404 skeletons)        │                              │
 
 ### Exit criteria
 
-- [ ] `pnpm check` passes with zero warnings on both packages (`eslint --max-warnings=0`)
-- [ ] Removing `DATABASE_URL` from the env fails at **boot**, not on first request — `tests/unit/config/env.test.ts` asserts the boot throws
-- [ ] `GET /health` returns `{ "data": { "status": "ok" }, "meta": { "requestId": "req_01…" } }` with an `X-Request-Id` response header
+- [x] `pnpm check` passes with zero warnings on both packages (`eslint --max-warnings=0`)
+- [x] Removing `DATABASE_URL` from the env fails at **boot**, not on first request — `tests/unit/config/env.test.ts` asserts the boot throws
+- [x] `GET /health` returns `{ "data": { "status": "ok" }, "meta": { "requestId": "req_01…" } }` with an `X-Request-Id` response header
 - [ ] Any unhandled thrown `Error` inside a controller becomes `500 E-INTERNAL` with the envelope, no stack trace in the body — asserted by `tests/unit/http/error.test.ts` (NFR-006)
 - [ ] Every response carries a `requestId` — asserted by REG-006 setup (`correlationIdMiddleware` mounted before `express.json()`; see [`./BE/be-architecture.md`](./BE/be-architecture.md) §6)
 - [ ] The FE renders `<LoadingState/>` and `<ErrorState requestId="req_01JTEST"/>` from Storybook-less fixture props with axe-core reporting zero violations (NFR-011, FR-015, FR-017)

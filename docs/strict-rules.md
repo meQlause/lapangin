@@ -10,7 +10,7 @@ in this repository follows them without being asked.
 |---|---|---|
 | SR-1 | Every dependency a service needs is injected, never imported. No module-level singleton inside a feature. Registered per feature in `<feature>.container.ts`, scoped per request through Awilix, proxy injection with a typed `Cradle`. | Boundary lint rule, and a unit test that builds each service with fakes |
 | SR-2 | `tests/` mirrors `src/` exactly. No test file lives inside `src/`. | Path parity script in CI |
-| SR-3 | The mandatory toolchain (Node 22, pnpm, PostgreSQL 16, Prisma 6, Vite 5, Playwright with Chromium) is installed in every repository. | Dependency check in CI |
+| SR-3 | The mandatory toolchain (Node 22, pnpm, PostgreSQL 16, Prisma 6, Vite 5, Playwright with Chromium, **`gh` authenticated**) is installed in every repository. `gh` is required so `/pspt:build` can create and wire the `backend`/`frontend` submodules on the first invocation. | Dependency check in CI |
 | SR-4 | Playwright with Chromium is installed and runnable, locally and in CI. | The `e2e` job |
 | SR-5 | The pipeline is green before a merge. A test is never skipped, deleted or weakened to reach green. | Branch protection |
 | SR-6 | Commits are authored by the connected account. No co-author trailer, no tool attribution. | `commitlint` hook |
