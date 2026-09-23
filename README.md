@@ -17,7 +17,7 @@ the engineering specification set comes out, one stage per commit.
 | S2 | `docs/data-spec.md` | ✓ |
 | S3 | strict rules, error registry, architecture, stack | ✓ |
 | S4 | endpoint contracts, testing strategy | ✓ |
-| S5 | design tokens, screen specs | · |
+| S5 | design tokens, screen specs | ✓ |
 | S6 | `docs/phases.md` | · |
 | S7 | code and tests | · |
 
@@ -60,6 +60,27 @@ which registers plugins at startup and does have the skills.
 ## Build log
 
 Newest first. One entry per commit.
+
+### S5 — design tokens and screen specifications
+
+```
+$ claude -p --permission-mode acceptEdits "/pspt:spec ... run S5 only, then stop."
+
+S5 complete. docs/FE/design-system.md — 12 colour tokens, 3 radius, 7 spacing, 6 type sizes,
+             8-row refactor map covering every mockup state;
+             docs/FE/features/{courts,booking-review}.md — 4 states each,
+             every FR-nnn threaded through fields, error mapping and acceptance criteria.
+```
+
+607 lines. **All twelve colour tokens match `mockup/styles.css` byte for byte** —
+checked by extracting each `--token: #hex` from the stylesheet and grepping the
+generated document for it. That is the one thing this stage must not get wrong: a
+token quietly "tidied" during extraction is a visual regression against a screen
+somebody already signed off, and it would not show up in any test.
+
+The refactor map has a row per state rather than per file, so the loading, empty
+and failure rows — the three that need no backend — are visible as work that can
+start on day one.
 
 ### S4 — endpoint contracts and testing
 
