@@ -166,7 +166,7 @@ error/404 skeletons)        │                              │
 - [x] FE `ReviewScreen` renders every acceptance criterion in [`./FE/features/booking-review.md`](./FE/features/booking-review.md) §7.1–§7.4: normal, slot-taken (form values preserved — FR-029), invalid input (offending field focused, banner announced), short-notice advisory (submittable — FR-031)
 - [x] `tests/e2e/booking-review.spec.ts` passes; `axe-core/playwright` reports zero violations on all four states (NFR-011)
 - [x] The three `screenshots/review-*.png` states are all reachable from the running app
-- [ ] `POST /bookings` success and `409 E-BOOKING-SLOT-TAKEN` both invalidate `['courts', slug, ...]` — the strip refreshes on both paths so the winner is visible (side effect from [`./BE/features/bookings.md`](./BE/features/bookings.md) §2)
+- [x] `POST /bookings` success and `409 E-BOOKING-SLOT-TAKEN` both invalidate `['courts', slug, ...]` — the strip refreshes on both paths so the winner is visible (side effect from [`./BE/features/bookings.md`](./BE/features/bookings.md) §2)
 
 > Two traps this phase names aloud. First, an application-level "is the slot taken" pre-check between a `SELECT` and the `INSERT` — a race the constraint exists to close. The service inserts, catches `PrismaClientKnownRequestError` code `P2004` (`exclusion_violation`) in `bookings.service.ts`, and translates once. Second, mounting `express.json()` before `correlationIdMiddleware` — the `requestId` in the FR-017 banner would be `null` on a JSON parse failure, and the whole correlation story breaks silently on the request most likely to fail parsing. REG-006 is here to keep both trap doors bolted.
 
