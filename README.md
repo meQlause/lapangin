@@ -16,7 +16,7 @@ the engineering specification set comes out, one stage per commit.
 | Gates | completeness · two-way consistency | ✓ |
 | S2 | `docs/data-spec.md` | ✓ |
 | S3 | strict rules, error registry, architecture, stack | ✓ |
-| S4 | endpoint contracts, testing strategy | · |
+| S4 | endpoint contracts, testing strategy | ✓ |
 | S5 | design tokens, screen specs | · |
 | S6 | `docs/phases.md` | · |
 | S7 | code and tests | · |
@@ -60,6 +60,46 @@ which registers plugins at startup and does have the skills.
 ## Build log
 
 Newest first. One entry per commit.
+
+### S4 — endpoint contracts and testing
+
+```
+$ claude -p --permission-mode acceptEdits "/pspt:spec ... run S4 only, then stop."
+
+S4 complete. docs/BE/features/{README,venues,courts,bookings}.md + docs/BE/testing.md
+             — 5 endpoints across 3 features, 10 reserved regressions (REG-001..010),
+             figure check matches mockup (Rp 180.000 x 2 -> Rp 360.000 + Rp 39.600 = Rp 399.600).
+```
+
+1028 lines. It split three features where I would have split two, and it
+re-derived the mockup's arithmetic rather than copying it, which is the check
+that makes the contract verifiable against the screenshot.
+
+**It found an endpoint I had missed.** `GET /venues/:slug/courts/:courtId/quote`.
+FR-026 says the client performs no arithmetic and the server owns every amount —
+so if the review screen displays a total *before* submitting, that total has to
+come from somewhere. My own hand-written pass had the client derive an estimate
+from `pricePerHour`, which quietly violates the requirement it was meant to
+satisfy. A quote endpoint is the correct reading.
+
+**Two things flagged at the checkpoint.**
+
+*Security, corrected in place.* Sign-in is out of scope (PRD §7), so the skill
+passed identity as an `X-User-Id` header. Defensible as a stub, dangerous if it
+ships: a client-supplied user id is forgeable, which makes NFR-005 meaningless —
+non-enumerability means nothing when the caller picks who they are. Added a boot
+refusal under `NODE_ENV=production` and a release-blocking exit criterion.
+
+The root cause is a gap in `srs.md`, not in the tool: it scopes out the sign-in
+*screens* while FR-018 still marks the review screen "Authenticated", and says
+nothing about the *mechanism*. The generator filled the silence, as it had to.
+
+*Open question, not corrected.* `GET /bookings/:id` is justified as "the review
+screen can render either", but no screen in the mockup loads a booking by id —
+after submit, the reference comes from the `POST` response. By the S4 exit
+criterion (*no document contains an endpoint no screen calls*) it should go. It
+is left in pending a decision, because a confirmation view is plausibly implied
+by acceptance criterion 2 and that is a product call, not a spec cleanup.
 
 ### S3 — shared decisions
 
