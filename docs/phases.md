@@ -157,7 +157,7 @@ error/404 skeletons)        │                              │
 ### Exit criteria
 
 - [x] `GET /api/v1/venues/gor-kemang/courts/<futsal-a-id>/quote?date=2026-09-27&startTime=10:00&duration=2` returns `unitPrice: "180000.00"`, `subtotalAmount: "360000.00"`, `taxAmount: "39600.00"`, `totalAmount: "399600.00"` — **REG-009-booking-quote-matches-mockup**
-- [ ] `POST /api/v1/venues/gor-kemang/bookings` with `{"totalAmount":"1"}` in the body returns `400 E-VALIDATION` — **REG-005-bookings-strict-extra-field** (`.strict()` on the schema, [`./BE/be-stack.md`](./BE/be-stack.md) §7 row 8)
+- [x] `POST /api/v1/venues/gor-kemang/bookings` with `{"totalAmount":"1"}` in the body returns `400 E-VALIDATION` — **REG-005-bookings-strict-extra-field** (`.strict()` on the schema, [`./BE/be-stack.md`](./BE/be-stack.md) §7 row 8)
 - [ ] `POST /api/v1/venues/gor-kemang/bookings` with a malformed JSON body (`{"broken":`) returns `400` with `requestId: "req_01…"` in the body **and** the same id in the log line — **REG-006-correlation-id-precedes-json**
 - [ ] Fires 20 `POST /venues/gor-kemang/bookings` for the same slot in parallel via `Promise.all`: exactly one returns `201`, 19 return `409 E-BOOKING-SLOT-TAKEN`; `SELECT count(*) FROM bookings` grew by `1` — **REG-001 through the HTTP surface** (NFR-001; REG-001 file already exists from P1, now with the routes wired)
 - [ ] User A creates a booking; user B (`X-User-Id: <different-uuid>`) `GET /bookings/<id>` receives byte-for-byte the same response as `GET /bookings/<random-uuid>`: `404`, code `E-BOOKING-NOT-FOUND`, identical `data` and `error.message` — **REG-003-booking-not-found-vs-forbidden** (NFR-005)
