@@ -95,7 +95,7 @@ Same shape as the backend. `pnpm test`, `pnpm e2e` and `pnpm size` run in additi
 | Dead code | `knip` | ^5 |
 | Bundle budget | `size-limit`, `@size-limit/preset-app` | ^11 |
 
-> No `date-fns`, no `dayjs`, no `moment`. The one Indonesian long-date format (`Sabtu, 27 September 2026`) uses `Intl.DateTimeFormat('id-ID', {…})`. Adding a date library needs a real requirement to justify the KB it costs against NFR-010.
+> No `date-fns`, no `dayjs`, no `moment`. The one Indonesian long-date format (`Minggu, 27 September 2026`) uses `Intl.DateTimeFormat('id-ID', {…})`. Adding a date library needs a real requirement to justify the KB it costs against NFR-010.
 
 > No UI kit (no MUI, no Chakra, no Radix). The mockup owns the visual system; adding one costs a full re-skin without a benefit the current design lacks. If a real accessibility requirement wants a proven combobox later, `react-aria` (headless) is the option to reach for first.
 

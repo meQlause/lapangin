@@ -45,7 +45,7 @@ Every figure below matches the mockup exactly ([`booking-review.html`](../../../
     },
     "schedule": {
       "bookingDate": "2026-09-27",
-      "bookingDateLabel": "Sabtu, 27 September 2026",
+      "bookingDateLabel": "Minggu, 27 September 2026",
       "startTime": "10:00",
       "endTime": "12:00",
       "durationHours": "2.00",
@@ -178,7 +178,7 @@ Write a booking for the identified court on `bookingDate` from `startTime` for `
     "paymentStatus": "pending",
     "schedule": {
       "bookingDate": "2026-09-27",
-      "bookingDateLabel": "Sabtu, 27 September 2026",
+      "bookingDateLabel": "Minggu, 27 September 2026",
       "startTime": "10:00",
       "endTime": "12:00",
       "durationHours": "2.00",

@@ -32,8 +32,10 @@ Read off `mockup/courts.html`, `mockup/booking-review.html` and `mockup/data.js`
 | Sport chip | `Semua` \| `Futsal` \| `Badminton` \| `Basket` | filter over `courts.sport` | `Semua` is the absence of the filter | FR-013 |
 | Action | `Pilih jadwal` → `booking-review.html` | link, no persisted field | — | FR-014 |
 | Skeleton | placeholder cards | UI state, no field | — | FR-015 |
-| Empty body | `Sabtu, 27 September 2026 jam 10:00 selama 2 jam` | echoes the filter values | — | FR-016 |
+| Empty body | `Minggu, 27 September 2026 jam 10:00 selama 2 jam` | echoes the filter values | — | FR-016 |
 | Error tag | `Kode permintaan: req_01J9Z4K2M7Q` | error envelope `requestId` | ULID-shape correlation id, see §7 | FR-017, NFR-007 |
+
+> Date correction: `2026-09-27` is Sunday. The static mockup hard-codes `Sabtu`; the API and UI format the actual date as `Minggu` in the venue timezone.
 
 ### 1.2 `booking-review.html`
 
@@ -42,7 +44,7 @@ Read off `mockup/courts.html`, `mockup/booking-review.html` and `mockup/data.js`
 | Crumb | `GOR Kemang · Review booking` | `venues.name` | — | FR-018 |
 | Schedule → Lapangan | `Lapangan Futsal A` | `courts.name` | — | FR-019 |
 | Schedule → Lokasi | `GOR Kemang · Jl. Kemang Raya No. 18, Jakarta Selatan` | `venues.name`, `venues.address` | — | FR-019 |
-| Schedule → Tanggal | `Sabtu, 27 September 2026` | `bookings.booking_date` | Indonesian long date formatted client-side | FR-019 |
+| Schedule → Tanggal | `Minggu, 27 September 2026` | `bookings.booking_date` | Indonesian long date formatted in the venue timezone | FR-019 |
 | Schedule → Jam | `10:00 sampai 12:00` | `bookings.start_time`, `bookings.end_time` | `HH:mm` on the wire | FR-019 |
 | Schedule → Durasi | `2 jam` | `bookings.duration_hours` | decimal, always whole hours this release | FR-019 |
 | Schedule → Zona waktu | `Asia/Jakarta (WIB)` | `venues.timezone`, snapshotted as `bookings.venue_timezone` | zone belongs to the row, never the server | FR-019, NFR-003 |

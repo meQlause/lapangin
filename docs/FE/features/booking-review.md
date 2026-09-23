@@ -58,7 +58,7 @@ Full contract in [`../../BE/features/bookings.md`](../../BE/features/bookings.md
 |---|---|---|
 | `data.court.name` | Schedule → Lapangan; breadcrumb link text | FR-018, FR-019 |
 | `data.court.venueName`, `.venueAddress` | Schedule → Lokasi joined with ` · ` — `GOR Kemang · Jl. Kemang Raya No. 18, Jakarta Selatan` | FR-019 |
-| `data.schedule.bookingDateLabel` | Schedule → Tanggal — `Sabtu, 27 September 2026` | FR-019 |
+| `data.schedule.bookingDateLabel` | Schedule → Tanggal — `Minggu, 27 September 2026` | FR-019 |
 | `data.schedule.startTime`, `.endTime` | Schedule → Jam — `10:00 sampai 12:00` | FR-019 |
 | `data.schedule.durationHours` | Schedule → Durasi — `"2.00"` rendered as `2 jam` (strip trailing `.00`, matches `mockup/booking-review.html:124`) | FR-019 |
 | `data.schedule.venueTimezone` | Schedule → Zona waktu — `Asia/Jakarta (WIB)`, using the server's `venueTimezoneLabel` when present | FR-019, NFR-003 |
@@ -130,7 +130,7 @@ Every state below is a code path in `ReviewScreen`. `?state=` from the mockup do
 | State | Trigger | Presentation |
 |---|---|---|
 | `normal` | Fresh landing; `useDraftBooking.status === 'success'`; no mutation attempt yet | Full layout: `ScheduleCard`, `BookerForm`, `CancellationPolicy`, `CostBreakdown`, `LockNote`. `Banners` is empty. Primary CTA reads `Lanjut ke pembayaran`, enabled (FR-018..027) |
-| `slot taken` | `useCreateBooking.error?.code === 'E-BOOKING-SLOT-TAKEN'` **or** a background availability refetch marks the exact slot as `taken` (checked with `classifySlot` from `features/courts/courts.rules.ts` on the quote's `startsAt`) | `Banners` renders the danger banner: `Jadwal ini baru saja diambil orang lain` — `Sabtu, 27 September 2026 jam 10:00 sampai 12:00 sudah tidak tersedia di Lapangan Futsal A. Data yang kamu isi tetap tersimpan, tinggal pilih jam lain.`. `SubmitBar` primary becomes disabled and relabels to `Pilih jam lain dulu`. **The form values are preserved** (FR-028, FR-029) |
+| `slot taken` | `useCreateBooking.error?.code === 'E-BOOKING-SLOT-TAKEN'` **or** a background availability refetch marks the exact slot as `taken` (checked with `classifySlot` from `features/courts/courts.rules.ts` on the quote's `startsAt`) | `Banners` renders the danger banner: `Jadwal ini baru saja diambil orang lain` — `Minggu, 27 September 2026 jam 10:00 sampai 12:00 sudah tidak tersedia di Lapangan Futsal A. Data yang kamu isi tetap tersimpan, tinggal pilih jam lain.`. `SubmitBar` primary becomes disabled and relabels to `Pilih jam lain dulu`. **The form values are preserved** (FR-028, FR-029) |
 | `invalid input` | Client Zod schema rejects on submit, **or** `useCreateBooking.error?.code === 'E-VALIDATION'` | `Banners` renders the danger banner: `Ada isian yang perlu diperbaiki` — `Periksa kembali kolom yang ditandai merah.`. The `BookerForm` row for each offending field is marked invalid (`aria-invalid="true"`, `.form-row.invalid`) and shows the field-message from [`../error-handling.md`](../error-handling.md) §4 (e.g. `Nomor WhatsApp minimal 9 angka, tanpa spasi atau tanda hubung.`). `SubmitBar` primary stays enabled and re-labelled `Lanjut ke pembayaran` — the user needs to be able to try again after the fix (FR-030) |
 | `short-notice advisory` | `data.policy.isInsideCancellationWindow === true` (server-decided) **or** `isInsideCancellationWindow(now, startsAt, windowHours)` returns `true` on the client (for reactivity without a refetch) | `Banners` renders the warn banner: `Booking kurang dari 12 jam sebelum main` — `Jadwal ini masih bisa dipesan, tetapi tidak bisa dibatalkan lagi setelah pembayaran.`. **`SubmitBar` primary stays enabled** — this is an advisory, not a blocker (FR-031) |
 
@@ -226,7 +226,7 @@ Written so `tests/e2e/booking-review.spec.ts` implements them without interpreta
 ### 7.1 Normal state
 
 - **Given** the seed and URL `/v/gor-kemang/courts/c1a7f2d4-2b88-4f1a-9a10-0f6e8c11b201/review?date=2026-09-27&startTime=10:00&duration=2`, **when** the page loads, **then** the breadcrumb reads `GOR Kemang · Review booking` and the page heading reads `Review booking` with the sub-copy `Periksa jadwal dan biayanya sebelum lanjut ke pembayaran.`. (FR-018)
-- **Given** the same, **when** the page loads, **then** the schedule card shows `Lapangan Futsal A`, `GOR Kemang · Jl. Kemang Raya No. 18, Jakarta Selatan`, `Sabtu, 27 September 2026`, `10:00 sampai 12:00`, `2 jam`, `Asia/Jakarta (WIB)`. (FR-019)
+- **Given** the same, **when** the page loads, **then** the schedule card shows `Lapangan Futsal A`, `GOR Kemang · Jl. Kemang Raya No. 18, Jakarta Selatan`, `Minggu, 27 September 2026`, `10:00 sampai 12:00`, `2 jam`, `Asia/Jakarta (WIB)`. (FR-019)
 - **Given** the same, **when** the page loads, **then** the booker form shows `Nama` prefilled `Azka Willian Muhammad`, `Nomor WhatsApp` prefilled `0812-1122-3344` with the hint `Dipakai untuk konfirmasi dan kode masuk lapangan.`, and an optional `Catatan untuk pengelola` textarea. (FR-020, FR-021, FR-022)
 - **Given** the same, **when** the page loads, **then** the cancellation card contains the sentence including the substring `12 jam`. (FR-023)
 - **Given** the same, **when** the page loads, **then** the cost breakdown shows the unit line `Rp 180.000 × 2 jam` → `Rp 360.000`, the tax line `Pajak 11.00%` → `Rp 39.600`, and the total `Rp 399.600`. (FR-024, FR-026, FR-032)
