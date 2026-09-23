@@ -93,7 +93,7 @@ error/404 skeletons)        │                              │
 
 ### Exit criteria
 
-- [ ] `pnpm prisma migrate deploy` on a fresh database creates the three extensions, six tables, and the `bookings_no_overlap` exclusion constraint — asserted by an integration test that `\d+ bookings` names the constraint
+- [x] `pnpm prisma migrate deploy` on a fresh database creates the three extensions, six tables, and the `bookings_no_overlap` exclusion constraint — asserted by an integration test that `\d+ bookings` names the constraint
 - [ ] `pricing.rules.ts` `quote("180000.00", 2, "11.00")` returns `{ subtotal: "360000.00", taxAmount: "39600.00", total: "399600.00" }` exactly — matches [`./BE/features/bookings.md`](./BE/features/bookings.md) §1 figure check and every screen figure (`Rp 180.000`, `Rp 360.000`, `Rp 39.600`, `Rp 399.600`)
 - [ ] `pricing.rules.ts` `quote("65000.00", 3, "11.00")` returns `{ subtotal: "195000.00", taxAmount: "21450.00", total: "216450.00" }` — rounding fires once, after tax, half-up
 - [ ] `availability.rules.ts` with `openingTime="06:00"`, `closingTime="23:00"` and no bookings classifies `05:00` and `23:00` as `closed`, every hour in `[06:00, 23:00)` as `free` (REG-007, FR-009)
