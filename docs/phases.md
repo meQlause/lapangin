@@ -195,7 +195,7 @@ error/404 skeletons)        │                              │
 - [x] Every regression file `REG-001`..`REG-010` has run green in the last 24 hours ([`./BE/testing.md`](./BE/testing.md) §4)
 - [x] Availability latency measured under seeded production-scale data: `GET /venues/gor-kemang/courts?date=…` returns within **300 ms** server time at p95 (NFR-008)
 - [x] Perceived responsiveness: `<LoadingState/>` paints within **100 ms** of a pending request (NFR-009)
-- [ ] No `TODO` in source anywhere — `sonarjs/todo-tag` blocks the commit; every deferred item is here ([`./strict-rules.md`](./strict-rules.md) SR-5, [`./BE/be-stack.md`](./BE/be-stack.md) §2)
+- [x] No `TODO` in source anywhere — `sonarjs/todo-tag` blocks the commit; every deferred item is here ([`./strict-rules.md`](./strict-rules.md) SR-5, [`./BE/be-stack.md`](./BE/be-stack.md) §2)
 
 > D-5 is the row this phase exists for. Every earlier phase runs against the stub because it must — sign-in is scoped out (PRD §7) and no phase gets to invent a session mechanism the requirements are silent on. But shipping the stub to production violates NFR-005; the guard here refuses that outcome at boot time so no operator can accidentally set the environment variable that opens it.
 
