@@ -132,12 +132,12 @@ error/404 skeletons)        │                              │
 - [x] A court with `status = 'maintenance'` returns an **empty** `slots[]` array and a non-null `maintenanceReason`, `maintenanceUntil` (FR-006) — asserted by `tests/integration/features/courts/courts.routes.test.ts` "a maintenance court has empty slots[]…"
 - [x] `sport=Semua` is rejected with `400 E-VALIDATION`; the FE client removes the param instead, so a real UI never sends the literal ([`./BE/features/courts.md`](./BE/features/courts.md) §1 notes)
 - [x] Every server-owned key rejected by `.strict()` on the query schema — a query with `?taxPercent=0` returns `400 E-VALIDATION` with a details row for the extra key
-- [ ] FE `CourtsScreen` renders every acceptance criterion in [`./FE/features/courts.md`](./FE/features/courts.md) §7.1–§7.4 against the real backend; `tests/e2e/courts.spec.ts` passes
+- [x] FE `CourtsScreen` renders every acceptance criterion in [`./FE/features/courts.md`](./FE/features/courts.md) §7.1–§7.4 against the real backend; `tests/e2e/courts.spec.ts` passes
 - [ ] `axe-core/playwright` reports **zero** violations on `filled`, `loading`, `empty`, `error` (NFR-011)
 - [ ] The four `screenshots/courts-*.png` states are all reachable from the running app
 - [ ] FE payload budget check — `pnpm size` under 180 KB gzipped (NFR-010)
 
-> The trap here is drift between the response body and the mockup. The seed is fixed in [`./data-spec.md`](./data-spec.md) §10 for exactly this reason: a reviewer holds `mockup/courts.html?state=filled` next to the running app and sees the same eight chips in the same order, or one of them is wrong.
+> The trap here is drift between the response body and the mockup. The seed is fixed in [`./data-spec.md`](./data-spec.md) §10 for exactly this reason: a reviewer holds `mockup/courts.html?state=filled` next to the running app and sees the same seventeen chips in the same order, or one of them is wrong.
 
 ---
 
