@@ -128,7 +128,7 @@ error/404 skeletons)        │                              │
 - [x] `GET /api/v1/venues/gor-kemang/courts?date=2026-09-27&startTime=10:00&duration=2` returns three items in `display_order`; Futsal A has slot chips with `08:00`, `09:00`, `19:00` taken and every other hour in `[06:00, 23:00)` free (matches `mockup/data.js` taken/free semantics — see spec correction). **Spec correction:** the criterion said "eight slot chips" mirroring the mockup's truncated illustration; the derived strip returns all 17 hours in `[06:00, 23:00)` per `classifySlot`, matching the algorithm the mockup was meant to illustrate. The 3 taken chips and the maintenance-court empty-slots contract are unchanged
 - [x] `GET /api/v1/venues/gor-kemang/courts?date=<today+31>` returns `400 E-OUTSIDE-HORIZON` with `details[].code = "beyond_horizon"`; `<today+30>` returns `200` — **REG-008-court-horizon-date**
 - [x] `UPDATE venues SET cancellation_window_hours = 24` changes `data.cancellationWindowHours` on the next call to `24` — **REG-010-venue-settings-copy** (NFR-013)
-- [ ] `GET /api/v1/venues/does-not-exist` returns `404 E-VENUE-NOT-FOUND`
+- [x] `GET /api/v1/venues/does-not-exist` returns `404 E-VENUE-NOT-FOUND`
 - [ ] A court with `status = 'maintenance'` returns an **empty** `slots[]` array and a non-null `maintenanceReason`, `maintenanceUntil` (FR-006)
 - [ ] `sport=Semua` is rejected with `400 E-VALIDATION`; the FE client removes the param instead, so a real UI never sends the literal ([`./BE/features/courts.md`](./BE/features/courts.md) §1 notes)
 - [ ] Every server-owned key rejected by `.strict()` on the query schema — a query with `?taxPercent=0` returns `400 E-VALIDATION` with a details row for the extra key
