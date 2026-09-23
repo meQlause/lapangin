@@ -193,7 +193,7 @@ error/404 skeletons)        │                              │
 - [x] `pnpm size` fails the CI job over 180 KB gzipped (NFR-010)
 - [x] `scripts/check-test-mirror.mjs` reports no missing test file — `tests/` mirrors `src/` exactly (SR-2)
 - [x] Every regression file `REG-001`..`REG-010` has run green in the last 24 hours ([`./BE/testing.md`](./BE/testing.md) §4)
-- [ ] Availability latency measured under seeded production-scale data: `GET /venues/gor-kemang/courts?date=…` returns within **300 ms** server time at p95 (NFR-008)
+- [x] Availability latency measured under seeded production-scale data: `GET /venues/gor-kemang/courts?date=…` returns within **300 ms** server time at p95 (NFR-008)
 - [ ] Perceived responsiveness: `<LoadingState/>` paints within **100 ms** of a pending request (NFR-009)
 - [ ] No `TODO` in source anywhere — `sonarjs/todo-tag` blocks the commit; every deferred item is here ([`./strict-rules.md`](./strict-rules.md) SR-5, [`./BE/be-stack.md`](./BE/be-stack.md) §2)
 
