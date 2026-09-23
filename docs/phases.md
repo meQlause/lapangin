@@ -102,7 +102,7 @@ error/404 skeletons)        │                              │
 - [x] **REG-002-bookings-price-immutable** — after the seed, `UPDATE courts SET price_per_hour = '250000.00' WHERE id = <futsal-a>`, a booking created before the update still reports `"180000.00" × 2 = "360000.00"` and total `"399600.00"` (NFR-002)
 - [x] **REG-004-prisma-decimal-serialisation** — asserts every `*.mapper.ts` return type has no `Prisma.Decimal` in it and that `typeof cost.subtotalAmount === "string"` on the wire (§7 traps of [`./BE/be-stack.md`](./BE/be-stack.md))
 - [x] **REG-007-court-closed-vs-taken** — pure unit test, no fakes (SR-7)
-- [ ] Every service constructible with plain-object fakes, no container, no database — SR-1 acceptance test in place per [`./BE/testing.md`](./BE/testing.md) §3.2
+- [x] Every service constructible with plain-object fakes, no container, no database — SR-1 acceptance test in place per [`./BE/testing.md`](./BE/testing.md) §3.2
 - [ ] `pnpm check`, `pnpm test` both green; unit coverage floor 100% on every `*.rules.ts` per [`./BE/testing.md`](./BE/testing.md) §7
 
 > This is the phase the rest of the plan bends around. If `EXCLUDE USING gist` behaves differently under the parallelism we plan to test — a driver quirk, a Prisma quirk, a missed `CREATE EXTENSION` — every write in P3 rests on a promise the database is not making. Finding out here means changing the migration; finding out in P3 means reshaping the write path around the wrong guarantee. And the pure rules are here rather than in P3 because a wrong tax number ships silently — a check-suite that pins the four screen figures now blocks every future refactor from drifting the arithmetic.
